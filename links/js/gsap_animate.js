@@ -1,0 +1,1 @@
+TweenMax.to('.scalable_policy', 8, { rotation:360, repeat:-1, ease: Linear.easeNone });

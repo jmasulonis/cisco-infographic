@@ -1,0 +1,782 @@
+@charset "utf-8";
+/* CSS Document */
+a{
+	text-decoration: underline;
+	color: #fff;
+}
+.main_outer {
+  font-size: 14px;
+  line-height: 30px;
+  color: #fff;
+  font-family: "CiscoSansTTRegular" !important;
+  font-weight: 300;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  -webkit-font-smooRegularg: subpixel-antialiased;
+  position: relative;
+  text-rendering: optimizeLegibility;
+  margin: 0;
+}
+.main_outer * {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.main_outer {
+  float: none;
+  width: 100%;
+  overflow: hidden;
+  background: #dddddd;
+}
+.main_outer .outerdiv {
+  background: #ffffff;
+  width: 1024px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+  overflow: hidden
+}
+.main_outer .inner_wrapper {
+  width: 1024px;
+  margin: 0 auto;
+  background: #055173;
+  top: 0;
+  position: relative; /* display: inline-block; */
+}
+.things {
+  margin: 0px;
+}
+.main_outer .banner_section {
+  width: 100%;
+  float: left;
+  background: #E8EAF0;
+  padding: 30px 00px 20px 00px;
+  text-align: center;
+}
+.main_outer .banner_section h1 {
+  font-size: 45px;
+  font-weight: 300;
+  text-align: center;
+  line-height: 1.2;
+  color: #0A5275;
+  /*  padding-bottom: 40px;*/
+  font-family: "CiscoSansTTLight";
+}
+/*.main_outer .banner_section img{
+	padding-bottom: 15px;
+}*/
+
+.main_outer .banner_section img.use-case{
+	width: 12%;
+	margin: 15px 65px;
+}
+
+.main_outer .content_section {
+  width: 100%;
+  float: left;
+  /*background: #0A5275;*/
+  padding: 30px;
+  text-align: center;
+}
+.main_outer .content_section p {
+  font-size: 26px;
+  line-height: 1.2;
+  font-family: "CiscoSansTTLight";
+}
+.main_outer .section {
+  width: 100%;
+  float: left;
+  padding: 80px;
+  background: #f7f9ff;
+}
+.main_outer .section.cta {
+  padding: 60px 50px;
+  text-align: center;
+}
+.main_outer .bg_grey {
+  background: #E8EAF0;
+}
+.main_outer .bg_indigo_blue {
+  background: #0A5275;
+}
+.main_outer .bg_cisco_blue {
+  background: #11BDEB;
+}
+.main_outer .bg_cisco_midnightblue {
+  background: #0D274D;
+}
+.main_outer .mobile_banner {
+  display: none;
+}
+.main_outer .whitecolortxt {
+  color: #0A5275;
+}
+.main_outer .section h1 {
+  padding-bottom: 15px;
+  width: 100%;
+  display: table;
+  line-height: 1.2;
+}
+.main_outer .section h1 span:nth-of-type(1) {
+  text-align: left;
+  width: 95px;
+  font-family: "CiscoSansTTLight";
+  font-weight: 300;
+  font-size: 38px;
+  line-height: 1.2;
+  color: #fff;
+  display: table-cell;
+  vertical-align: middle;
+}
+.main_outer .section h1 span:nth-of-type(2) {
+  font-family: "CiscoSansTTLight";
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 1.2;
+  color: #fff;
+  display: table-cell;
+  vertical-align: middle;
+}
+.main_outer .fullwidth {
+  width: 100%;
+  float: left;
+}
+.main_outer .col-1 {
+  width: 8.33333333%;
+}
+.main_outer .col-2 {
+  width: 16.66666667%;
+}
+.main_outer .col-3 {
+  width: 25%;
+}
+.main_outer .col-4 {
+  width: 33.33333333%;
+}
+.main_outer .col-5 {
+  width: 41.66666667%;
+}
+.main_outer .col-6 {
+  width: 50%;
+}
+.main_outer .col-7 {
+  width: 58.33333333%;
+}
+.main_outer .col-8 {
+  width: 66.66666667%;
+}
+.main_outer .col-9 {
+  width: 75%;
+}
+.main_outer .col-10 {
+  width: 83.33333333%;
+}
+.main_outer .col-11 {
+  width: 91.66666667%;
+}
+.main_outer .col-12 {
+  width: 100%;
+}
+.main_outer .float-left {
+  float: left;
+  text-align: center;
+
+}
+.main_outer .float-right {
+  float: right;
+  text-align: center;
+}
+
+.main_outer .section p {
+  color: #fff;
+  font-size: 22px;
+  font-family: "CiscoSansTTLight";
+  line-height: 1.3;
+  text-align: left;
+}
+.main_outer .section ul {
+  color: #fff;
+  font-size: 18px;
+  font-family: "CiscoSansTTLight";
+  line-height: 1.4;
+  margin-left:25px;
+  padding-top:10px;
+  text-align: left;
+  text-decoration: none;
+}
+
+.main_outer .section ul li{
+	padding:0 0 15px 5px;
+}
+
+.stats{
+	text-align: center;
+}
+
+.main_outer .section .stats p{
+	padding-top: 10px;
+	text-align: center;
+	font-size:16px;
+	line-height:1.2;
+}
+.main_outer .section .stats h3{
+  color: #00bceb;
+  font-size: 22px;
+  font-family: "CiscoSansTTLight";
+  font-weight: 100;
+  line-height: 1.4;
+  padding-bottom: 10px;
+}
+.main_outer .section .stats img{
+	width:55%;
+}
+
+.stats-left{
+	float: left;
+	width: 50%;
+	padding-right: 10px;
+}
+.stats-right{
+	float: right;
+	width: 50%;
+	padding-left: 10px;
+}
+.networkStats{
+	margin-top:30px;
+}
+
+.main_outer .section.summary p {
+  color: #ffffff;
+  font-size: 26px;
+  font-family: "CiscoSansTTLight";
+  line-height: 1.4;
+  text-align: center;
+}
+.main_outer .pad-t-40 {
+  padding-top: 40px;
+}
+.main_outer .pad-b-40 {
+  padding-bottom: 40px;
+}
+.main_outer .section.wifi .col-5 {
+  text-align: center;
+}
+.main_outer .section.timeline h2 {
+  color: #0A5275;
+  font-family: "CiscoSansTTBold";
+  font-size: 22px;
+  text-align: center;
+}
+.main_outer .section.timeline .box {
+  widtH: 100%;
+  float: left;
+  background: #fff;
+  padding: 20px 35px;
+  border-radius: 15px;
+}
+.main_outer .mar-b-40 {
+  margin-bottom: 40px;
+}
+.main_outer img.smartphone_height {
+  height: 108px;
+}
+.main_outer img.wifi_line_mobile {
+  width: 40px;
+  transform: scale(1) translate(450%, -45%) !important;
+  position: absolute;
+  display: none;
+}
+.main_outer img.timeline_line {
+  width: 11px;
+  transform: scale(1) translate(300%, 3%) !important;
+  position: absolute;
+}
+.main_outer img.mobile_timeline_line {
+  width: 11px;
+  transform: scale(1) translate(300%, 3%) !important;
+  position: absolute;
+  display: none;
+}
+.main_outer .section.timeline .box .col-2 {
+  text-align: center;
+}
+.main_outer .transformy25 {
+  transform: translateY(25%);
+}
+.main_outer .transformy50 {
+  transform: translateY(50%);
+}
+.main_outer .section.timeline h1 span:nth-of-type(2) {
+  position: absolute;
+}
+.main_outer .section.summary h3 {
+  color: #ffffff;
+  font-family: "CiscoSansTTLight";
+  font-size: 50px;
+  text-align: center;
+  line-height: 1.2;
+  padding-bottom: 30px;
+  font-weight: 100;
+}
+.main_outer .btn {
+  font-family: "CiscoSansTTLight";
+  width: auto;
+  padding: 12px 15px;
+  display: inline-block;
+  text-align: center;
+  font-size: 20px;
+  text-decoration: none;
+  color: #ffffff;
+  border-radius: 50px;
+  line-height: 1.2;
+  margin: 8px 0 ;
+}
+.main_outer .indigo_primary {
+  background: #0A5275;
+  border: 1px solid #0A5275;
+  color: #ffffff;
+}
+.main_outer .indigo_primary:hover {
+  background: #00405c;
+  border: 1px solid #00405c;
+  color: #ffffff;
+}
+.main_outer .btn:last-child {
+  margin-bottom: 0px;
+  border: 0px;
+}
+.main_outer .sec_btn2 {
+  font-family: "CiscoSansTTLight";
+  font-size: 20px;
+  color: #055174;
+  text-decoration: none;
+}
+.main_outer h1 span img {
+  display: inline-block;
+  vertical-align: middle;
+}
+.main_outer #animation_container, .main_outer #dom_overlay_container {
+  width: 100% !important;
+  height: auto !important;
+}
+.main_outer #canvas {
+  width: 100% !important;
+  height: auto !important;
+  position: relative !important;
+}
+.main_outer .sec_btn {
+  display: inline-block;
+  background-color: transparent;
+  color: #005073;
+  border: 1px solid #005073;
+  transition: 0.2s;
+  border-radius: 50px;
+  padding:10px 45px;
+  margin: 0px 15px;
+  text-decoration: none;
+  line-height: 1.3;
+  box-sizing: border-box;
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+}
+.main_outer .sec_btn:hover {
+  background-color: #0a7998;
+  color: #fff;
+  border: 1px solid #0a7998;
+  transition: 0.2s;
+}
+	.break{
+		display: none;
+	}
+		
+.main_outer .sec_btn1{
+	background-color: #005073;
+	color: #fff;
+	margin: 0;
+}
+
+.main_outer .section .numberHead {
+  padding-bottom:0;
+  font-family: "CiscoSansTTLight";
+  font-size: 110px;
+  line-height: 1.2;
+  font-weight: 100;
+  text-align: left;
+
+}
+
+		#green{
+			color:#74BF4B;
+		}
+
+		#ciscoOceanblue{
+			color: #d9f4fb;
+		}
+		#ciscoRed{
+			color: #E3241B;
+		}
+		#ciscoSkyblue{
+			color: #00BCEB;
+		}
+		#ciscoMidnightblue{
+			color: #d9f4fb;
+		}
+		#ciscoOrange{
+			color: #FBAB2C;
+		}
+
+#footnotes{
+	padding: 25px 100px;
+}
+	#footnotes ol{
+		font-family: "CiscoSansTTLight";
+		font-style: italic;
+		font-size:14px;
+		line-height:1.6;
+	}
+			#footnotes ol li{
+				padding-bottom: 10px;
+			}
+				#footnotes ol note_three{
+						line-height: 1.3;
+				}
+
+sup{
+	vertical-align: text-top;
+	font-size: 10px;
+}
+
+.main_outer .banner_section img.cisco_btp{
+	width:35%;
+	padding-bottom: 25px;
+}
+
+#footnotes p.legal_block{
+	font-size: .9em;
+}
+	
+
+/* responsive */
+@media only screen and (max-width : 1023px) {
+  .main_outer .outerdiv {
+    width: 100%;
+  }
+  .main_outer .inner_wrapper {
+    width: 100%;
+  }
+}
+@media only screen and (max-width : 910px) {
+  .main_outer .section{
+	padding:80px 120px;	
+	}
+  .main_outer .section h1 span:nth-of-type(1) .transformy25 {
+    transform: translateY(0%);
+  }
+  .main_outer .section h1 span:nth-of-type(1) {
+   text-align: center;
+  }
+  .main_outer .section h1 span:nth-of-type(2) {
+    font-size: 32px;
+  }
+  .main_outer .section h1 {
+    padding-bottom: 15px;
+  }
+  .main_outer .col-5 {
+    width: 100%;
+    text-align: center;
+  }
+  .main_outer .col-5 img {
+    width: 300px;
+  }
+  .main_outer .wifi .col-5 img {
+    width: 40px !important;
+  }
+  .main_outer .col-6 {
+    width: 100%;
+    text-align: center;
+    float: left;
+	margin-bottom:35px;  
+  }
+  .main_outer .section p {
+    text-align: left;
+  }
+	.main_outer .section .stats p{
+		padding:0 5px;
+	}
+  .main_outer .section.wifi .col-5 {
+    width: 100%;
+  }
+  .main_outer .section.wifi p {
+    text-align: left;
+  }
+  .main_outer .section.wifi .col-6 {
+    width: 90%;
+    text-align: center;
+    float: right;
+  }
+  .main_outer .section.wifi .col-6 img {
+    width: 300px;
+    margin: 0 auto 50px auto;
+  }
+  .main_outer img.wifi_line {
+    display: none;
+  }
+  .main_outer img.wifi_line_mobile {
+    display: block;
+    transform: scale(1) translate(0%, 15%) !important;
+  }
+  .main_outer .section.timeline h1 span:nth-of-type(2) {
+    position: inherit;
+  }
+  .main_outer .transformy50 {
+    transform: translateY(0%);
+  }
+  .main_outer .section.timeline .col-1.mobile_wifi {
+    width: 90%;
+    margin-bottom: 30px;
+    float: right;
+  }
+  .main_outer .section.timeline .col-1.mobile_wifi img:first-child {
+    width: 100px
+  }
+  .main_outer .section.timeline .col-1.mobile_wifi h2 {
+    text-align: left;
+  }
+  .main_outer .section.timeline p {
+    text-align: left;
+  }
+  .main_outer .section.timeline .col-10 {
+    width: 90%;
+  }
+  .main_outer .section.timeline .col-10 p.pad-b-40 {
+    text-align: left;
+  }
+  .main_outer img.timeline_line {
+    display: none;
+  }
+  .main_outer img.mobile_timeline_line {
+    display: block;
+    transform: scale(1) translate(-75px, -7%) !important;
+  }
+  /*.main_outer .btn {
+    width: 90%;
+  }*/
+  .main_outer .section.timeline .box .col-8 {
+    width: 75%;
+  }
+  .main_outer .section.timeline .box .col-8 p {
+    text-align: left;
+  }
+  .main_outer img.mobile_hide {
+    display: none;
+  }
+  .main_outer img.mobile_visible {
+    display: block;
+  }
+  .main_outer .section.wifi .col-6 p:nth-of-type(1) {
+    padding-bottom: 40px;
+  }
+	.main_outer .section .stats img{
+	width:60%;
+	}
+	
+	.main_outer .section .stats p{
+		font-size:14px;
+	}
+	
+	.main_outer .section .numberAlign{
+		  text-align: center;	
+	}
+	
+	.main_outer .sec_btn2 {
+	  font-size: 15px;
+	}
+	.main_outer img.mobile_visible {
+ 	 display: none;
+	}
+}
+@media only screen and (max-width : 768px) {
+  #canvas {
+    width: 100% !important;
+    height: auto !important;
+    position: relative !important
+  }
+  #animation_container {
+    width: 100% !important;
+    height: auto !important
+  }
+}
+@media only screen and (max-width : 767px) {
+  .main_outer .mobile_banner {
+    display: block;
+    width: 100%;
+  }
+  .main_outer img.wifi_line_mobile {
+    display: none;
+  }
+  .main_outer .section.wifi .col-6 {
+    width: 100%;
+    float: left;
+  }
+  .main_outer .banner_section h1 br {
+    display: block;
+  }
+  .main_outer .section.wifi p, .section.timeline p {
+    text-align: center;
+  }
+  .main_outer img.mobile_timeline_line {
+    display: none;
+  }
+  .main_outer .section.timeline .col-1.mobile_wifi {
+    width: 100%;
+    float: left;
+    text-align: center
+  }
+  .main_outer .section.timeline .col-10 {
+    width: 100%;
+    float: left;
+  }
+  .main_outer .transformy25 {
+    transform: translateY(0%);
+  }
+  .main_outer .btn {
+    width: 90%;
+	  margin-bottom: 15px;
+  }
+  .main_outer .section p, .main_outer .section.summary p, .main_outer .content_section p {
+    font-size: 18px;
+    line-height: 1.2;
+	text-align: left;
+  }
+	.main_outer .content_section .head-text{
+		text-align: center;	
+	}
+  .main_outer .section h1 span:nth-of-type(2), .main_outer .banner_section h1, .main_outer .section.summary h3 {
+    font-size: 26px;
+    display: block;
+    clear: both;
+    text-align: center;
+  }
+  .main_outer .banner_section h1 {
+    font-size: 32px;
+    line-height: 1.2
+  }
+  .main_outer .section {
+    width: 100%;
+    float: left;
+    padding: 50px 100px;
+  }
+	.main_outer .section ul li{
+		font-size:14px;
+	}
+	
+  .main_outer .section h1 span:nth-of-type(1) {
+	font-size: 32px;
+    margin-bottom: 0px;
+    padding-right: 0;
+    float: none;
+    padding-bottom: 10px;
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+  .main_outer .content_section {
+    width: 100%;
+    float: left;
+    background: #E8EAF0;
+    padding: 25px 25px;
+  }
+  .main_outer .section.timeline .col-1.mobile_wifi h2 {
+    text-align: center;
+  }
+  .main_outer .section.cta {
+    padding: 50px 50px;
+  }
+	.main_outer .section .stats h3{
+		font-size:24px;
+	}
+	
+	.main_outer .section .numberAlign{
+		  text-align: center;
+	}	
+	
+}
+@media only screen and (max-width : 640px) {
+  .main_outer br {
+    display: none;
+  }
+  .main_outer .section.timeline .box .col-2 {
+    width: 100%;
+  }
+  .main_outer .section.timeline .box .col-2 img {
+    height: 108px;
+    margin-bottom: 30px;
+  }
+  .main_outer .section.timeline .box .col-1 {
+    display: none;
+  }
+  .main_outer .section.timeline .box .col-8 {
+    width: 100%;
+  }
+  .main_outer .section.timeline .box .col-8 p {
+    text-align: center;
+  }
+}
+@media only screen and (max-width : 540px) {
+  .main_outer .col-5 img, .main_outer .section.wifi .fullwidth .col-6 img {
+    width: 75%;
+  }
+  .main_outer .btn {
+    font-size: 16px;
+  }
+  .main_outer .section, .main_outer .content_section, .main_outer .section.cta {
+    padding: 30px 35px;
+  }
+  .main_outer .banner_section h1  {
+    font-size:25px;
+  }
+.main_outer .section ul {
+		font-size:14px;
+	}
+	.stats-left{
+		width: 50%;
+	}
+	.stats-right{
+		width: 50%;
+	}
+	.main_outer .banner_section img{
+		width:40%
+	}
+	.main_outer .section p{
+		font-size: 16px;
+		padding: 0 10px;
+	}
+	
+	#numberHead{
+		text-align: center;
+	}
+	
+	#footnotes{
+		padding:25px 75px;
+	}
+	#footnotes ol{
+		font-size:12px;
+	}
+	.main_outer .section .numberHead{
+		font-size: 55px;
+	}
+	.main_outer .section h1 span:nth-of-type(1){
+		font-size: 28px;
+	}
+	.main_outer .banner_section img.cisco_btp{
+		width:60%;
+	}
+	#footnotes p.legal_block{
+	font-size: .8em;
+	padding: 0;
+}
+	
+	
+}
+
