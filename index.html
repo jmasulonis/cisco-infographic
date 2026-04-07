@@ -1,756 +1,1062 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6 Use Cases for Cisco Secure Network Access</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --cisco-blue: #00bceb;
-    --cisco-blue-dim: #0077a8;
-    --bg-deep: #060c14;
-    --bg-card: #0d1825;
-    --bg-card-hover: #112030;
-    --accent: #00e5ff;
-    --accent-warm: #ff6b2b;
-    --text-primary: #f0f6ff;
-    --text-muted: #7a9bb5;
-    --border: rgba(0, 188, 235, 0.18);
-    --stat-glow: 0 0 40px rgba(0, 188, 235, 0.4);
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg-deep);
-    color: var(--text-primary);
-    font-family: 'Barlow', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  /* ── GRAIN OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    position: relative;
-    padding: 4rem 2rem;
-    overflow: hidden;
-  }
-
-  .hero-bg-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,188,235,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,188,235,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 700px;
-    height: 700px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,188,235,0.12) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
-
-  .hero-logos {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.2s forwards;
-  }
-
-  .hero-logos img { height: 56px; }
-
-  .hero-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--cisco-blue);
-    margin-bottom: 1.2rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.4s forwards;
-  }
-
-  .hero-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(3.5rem, 9vw, 8rem);
-    font-weight: 900;
-    line-height: 0.92;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.5s forwards;
-  }
-
-  .hero-title .highlight {
-    color: var(--cisco-blue);
-    display: block;
-    -webkit-text-stroke: 2px var(--cisco-blue);
-    color: transparent;
-    text-shadow: none;
-  }
-
-  .hero-title .solid { color: var(--text-primary); display: block; }
-
-  .hero-desc {
-    max-width: 640px;
-    margin: 0 auto 3rem;
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    line-height: 1.8;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.65s forwards;
-  }
-
-  .hero-nav-images {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.8s forwards;
-  }
-
-  .hero-nav-images img { height: 80px; opacity: 0.85; }
-
-  .scroll-cue {
-    position: absolute;
-    bottom: 2.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 1.2s forwards;
-  }
-
-  .scroll-cue-line {
-    width: 1px;
-    height: 48px;
-    background: linear-gradient(to bottom, var(--cisco-blue), transparent);
-    animation: pulse-line 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-line {
-    0%, 100% { opacity: 0.4; transform: scaleY(1); }
-    50% { opacity: 1; transform: scaleY(1.1); }
-  }
-
-  /* ── SECTION DIVIDER ── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--cisco-blue), transparent);
-    margin: 0 4rem;
-    opacity: 0.3;
-  }
-
-  /* ── USE CASE SECTIONS ── */
-  .use-case {
-    padding: 7rem 0;
-    position: relative;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-
-  .use-case.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .use-case:nth-child(odd) .use-case-inner { flex-direction: row; }
-  .use-case:nth-child(even) .use-case-inner { flex-direction: row-reverse; }
-
-  .use-case-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 3rem;
-    display: flex;
-    gap: 5rem;
-    align-items: center;
-  }
-
-  .use-case-content { flex: 1; }
-  .use-case-visual { flex: 0 0 360px; display: flex; flex-direction: column; gap: 1.5rem; align-items: center; }
-
-  /* Number watermark */
-  .use-case-number {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12rem;
-    font-weight: 900;
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(0,188,235,0.08);
-    position: absolute;
-    right: 3rem;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .use-case:nth-child(even) .use-case-number { right: auto; left: 3rem; }
-
-  .use-case-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--cisco-blue);
-    margin-bottom: 1rem;
-  }
-
-  .use-case-tag::before {
-    content: '';
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: var(--cisco-blue);
-  }
-
-  .use-case-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 800;
-    text-transform: uppercase;
-    line-height: 1;
-    letter-spacing: -0.01em;
-    margin-bottom: 1.5rem;
-    color: var(--text-primary);
-  }
-
-  .use-case-body {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .use-case-bullets {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .use-case-bullets li {
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-start;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-  }
-
-  .use-case-bullets li::before {
-    content: '▸';
-    color: var(--cisco-blue);
-    flex-shrink: 0;
-    margin-top: 0.05rem;
-    font-size: 0.8rem;
-  }
-
-  /* Main icon */
-  .use-case-icon img {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 30px rgba(0, 188, 235, 0.35));
-    transition: filter 0.3s;
-  }
-
-  .use-case-icon:hover img {
-    filter: drop-shadow(0 0 50px rgba(0, 188, 235, 0.7));
-  }
-
-  /* Stat pills */
-  .stat-pills { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
-
-  .stat-pill {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .stat-pill::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: var(--cisco-blue);
-    border-radius: 3px 0 0 3px;
-  }
-
-  .stat-pill:hover {
-    border-color: rgba(0,188,235,0.45);
-    background: var(--bg-card-hover);
-    box-shadow: var(--stat-glow);
-  }
-
-  .stat-pill img {
-    height: 52px;
-    width: auto;
-    flex-shrink: 0;
-    filter: brightness(1.1) saturate(1.2);
-  }
-
-  .stat-text {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  /* ── CTA SECTION ── */
-  .cta-section {
-    padding: 8rem 2rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-
-  .cta-section.visible { opacity: 1; transform: translateY(0); }
-
-  .cta-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(0,188,235,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .cta-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-  }
-
-  .cta-subtitle {
-    color: var(--text-muted);
-    margin-bottom: 3rem;
-    font-size: 1rem;
-  }
-
-  .cta-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 0.9rem 2.5rem;
-    border-radius: 6px;
-    transition: all 0.25s ease;
-    display: inline-block;
-  }
-
-  .btn-primary {
-    background: var(--cisco-blue);
-    color: #000;
-  }
-
-  .btn-primary:hover {
-    background: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,188,235,0.4);
-  }
-
-  .btn-outline {
-    border: 1px solid var(--border);
-    color: var(--cisco-blue);
-    background: transparent;
-  }
-
-  .btn-outline:hover {
-    border-color: var(--cisco-blue);
-    background: rgba(0,188,235,0.08);
-    transform: translateY(-2px);
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .footnotes {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 0.5rem 2rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .footnote {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  .footnote a { color: var(--cisco-blue); text-decoration: none; }
-  .footnote a:hover { text-decoration: underline; }
-
-  .footer-legal {
-    font-size: 0.72rem;
-    color: rgba(122, 155, 181, 0.5);
-    line-height: 1.7;
-    border-top: 1px solid rgba(0,188,235,0.08);
-    padding-top: 2rem;
-    margin-top: 1rem;
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
-    .use-case-inner { flex-direction: column !important; padding: 0 1.5rem; gap: 3rem; }
-    .use-case-visual { flex: none; width: 100%; }
-    .use-case-number { display: none; }
-    .stat-pills { flex-direction: row; flex-wrap: wrap; }
-    .stat-pill { flex: 1; min-width: 200px; }
-    footer { padding: 2rem 1.5rem; }
-  }
-</style>
-</head>
-<body>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-glow"></div>
-
-  <div style="position:relative; z-index:2;">
-    <div class="hero-logos">
-      <a href="https://www.cisco.com">
-        <img src="https://jmasulonis.github.io/cisco-infographic/links/image/cisco-btp-logo-stack.svg" alt="Cisco">
-      </a>
-    </div>
-
-    <p class="hero-eyebrow">Cisco Secure Network Access</p>
-
-    <h1 class="hero-title">
-      <span class="solid">6 Use Cases</span>
-      <span class="highlight">That Transform</span>
-      <span class="solid">Your Network</span>
-    </h1>
-
-    <p class="hero-desc">
-      As connected devices multiply and data-intensive applications surge, IT must deliver fast, reliable, and secure networks for branches and campuses. Cisco Secure Network Access makes it possible.
-    </p>
-
-    <div class="hero-nav-images">
-      <img src="https://jmasulonis.github.io/cisco-infographic/links/image/1-2-3.svg" alt="Use cases 1-3">
-      <img src="https://jmasulonis.github.io/cisco-infographic/links/image/4-5-6.svg" alt="Use cases 4-6">
-    </div>
-  </div>
-
-  <div class="scroll-cue">
-    <span>Scroll</span>
-    <div class="scroll-cue-line"></div>
-  </div>
-</section>
-
-<!-- USE CASE 1 -->
-<div class="divider"></div>
-<section class="use-case">
-  <div class="use-case-number">01</div>
-  <div class="use-case-inner">
-    <div class="use-case-content">
-      <span class="use-case-tag">Use Case 01</span>
-      <h2 class="use-case-title">Campus Network Assurance</h2>
-      <p class="use-case-body">IT needs to improve network availability and performance as employees and customers demand a high-quality experience every time they connect.</p>
-      <ul class="use-case-bullets">
-        <li>Identify and solve network issues faster with real-time analytical capability</li>
-        <li>Provide visibility and assurance across campus infrastructure from a single pane of glass</li>
-        <li>Monitor the network and identify unusual behavior using enterprise-scale AI and ML</li>
-      </ul>
-    </div>
-    <div class="use-case-visual">
-      <div class="use-case-icon">
-        <img src="https://jmasulonis.github.io/cisco-infographic/links/image/campus-network-assurance.svg" alt="Campus Network Assurance">
-      </div>
-      <div class="stat-pills">
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/90-reduction-time.svg" alt="90% reduction">
-          <span class="stat-text">Reduction in time for issue detection and resolution</span>
-        </div>
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/75-reduction-alerts.svg" alt="75% reduction">
-          <span class="stat-text">Reduction in alerts with DNA Assurance AI/ML</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- USE CASE 2 -->
-<div class="divider"></div>
-<section class="use-case">
-  <div class="use-case-number">02</div>
-  <div class="use-case-inner">
-    <div class="use-case-content">
-      <span class="use-case-tag">Use Case 02</span>
-      <h2 class="use-case-title">Network Device Onboarding</h2>
-      <p class="use-case-body">The network needs to move as fast as the business. Automating deployment and software maintenance allows IT to design, configure, and deploy new services faster than ever.</p>
-      <ul class="use-case-bullets">
-        <li>Robust automation for onboarding devices with consistent software and security versions</li>
-        <li>Cisco DNA Center automation reduces risk of manual processes and cuts time and expenses</li>
-        <li>Single automation solution for entire campus — day-0 deployments and day-1+ changes</li>
-        <li>Design the network before the physical site is up for maximum agility</li>
-      </ul>
-    </div>
-    <div class="use-case-visual">
-      <div class="use-case-icon">
-        <img src="https://jmasulonis.github.io/cisco-infographic/links/image/network-device-onboarding.svg" alt="Network Device Onboarding">
-      </div>
-      <div class="stat-pills">
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/67-provisioning.svg" alt="67% savings">
-          <span class="stat-text">Provisioning time savings</span>
-        </div>
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/3-4-hours.svg" alt="3-4 hours">
-          <span class="stat-text">Saved every time a customer deploys a server</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- USE CASE 3 -->
-<div class="divider"></div>
-<section class="use-case">
-  <div class="use-case-number">03</div>
-  <div class="use-case-inner">
-    <div class="use-case-content">
-      <span class="use-case-tag">Use Case 03</span>
-      <h2 class="use-case-title">Campus Software Image Management</h2>
-      <p class="use-case-body">Network performance and security compliance requires up-to-date, consistent network images across the entire network — managed with minimal IT staff effort.</p>
-      <ul class="use-case-bullets">
-        <li>Automate network upgrades, software image management, and infrastructure refreshes</li>
-        <li>Maintain consistency of software and features through LAN and WLAN infrastructure</li>
-        <li>Decrease security and configuration incidents and platform vulnerabilities</li>
-        <li>Verify hardware compatibility and sufficient memory before upgrades</li>
-      </ul>
-    </div>
-    <div class="use-case-visual">
-      <div class="use-case-icon">
-        <img src="https://jmasulonis.github.io/cisco-infographic/links/image/compus-software-management.svg" alt="Campus Software Image Management">
-      </div>
-      <div class="stat-pills">
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/80-reduce-opex.svg" alt="80% reduction">
-          <span class="stat-text">Reduce IT OpEx by up to 80%</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- USE CASE 4 -->
-<div class="divider"></div>
-<section class="use-case">
-  <div class="use-case-number">04</div>
-  <div class="use-case-inner">
-    <div class="use-case-content">
-      <span class="use-case-tag">Use Case 04</span>
-      <h2 class="use-case-title">Campus Network Segmentation</h2>
-      <p class="use-case-body">Design a network that automatically segments users and devices — recognizing things and provisioning the appropriate policy without manual intervention.</p>
-      <ul class="use-case-bullets">
-        <li>Single platform enabling macro and micro-segmentation for scalability and flexibility</li>
-        <li>A single network fabric for a consistent user experience without compromising security</li>
-        <li>Combines device profiling with segmentation policy for automatic IoT security</li>
-      </ul>
-    </div>
-    <div class="use-case-visual">
-      <div class="use-case-icon">
-        <img src="https://jmasulonis.github.io/cisco-infographic/links/image/campus-network-seg.svg" alt="Campus Network Segmentation">
-      </div>
-      <div class="stat-pills">
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/30-min-seg.svg" alt="30 minutes">
-          <span class="stat-text">Network segmentation reduced from hours to 30 minutes</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- USE CASE 5 -->
-<div class="divider"></div>
-<section class="use-case">
-  <div class="use-case-number">05</div>
-  <div class="use-case-inner">
-    <div class="use-case-content">
-      <span class="use-case-tag">Use Case 05</span>
-      <h2 class="use-case-title">Scalable Access Policy</h2>
-      <p class="use-case-body">Security policies should adapt to the user, device, and context. A secure access network automatically recognizes and applies policies across the entire organization.</p>
-      <ul class="use-case-bullets">
-        <li>Connect an increasing number of device types with confidence</li>
-        <li>Create and implement dynamic security by user, device, and application</li>
-        <li>Policies automatically implemented in conjunction with segmentation capabilities</li>
-        <li>Dramatically reduce security risk for both wired and wireless access</li>
-      </ul>
-    </div>
-    <div class="use-case-visual">
-      <div class="use-case-icon">
-        <img src="https://jmasulonis.github.io/cisco-infographic/links/image/scalable-access-policy.svg" alt="Scalable Access Policy">
-      </div>
-      <div class="stat-pills">
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/67-reduction-cost.svg" alt="67% cost reduction">
-          <span class="stat-text">Reduction in cost at a hospital in LA</span>
-        </div>
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/10-times-faster.svg" alt="10x faster">
-          <span class="stat-text">Faster than before with Cisco SD-Access</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- USE CASE 6 -->
-<div class="divider"></div>
-<section class="use-case">
-  <div class="use-case-number">06</div>
-  <div class="use-case-inner">
-    <div class="use-case-content">
-      <span class="use-case-tag">Use Case 06</span>
-      <h2 class="use-case-title">Location Analytics</h2>
-      <p class="use-case-body">Eliminate the physical blind spot and understand how people and things interact in physical spaces. Leverage your existing Wi-Fi infrastructure for actionable insights.</p>
-      <ul class="use-case-bullets">
-        <li>Centralized control and visibility into location services via a single role-based dashboard</li>
-        <li>Enhance customer experiences with insights into visitors and employees</li>
-        <li>Improve business efficiency and reduce costs through asset management</li>
-        <li>Increase attachment rates and unlock new opportunities via OpenRoaming</li>
-      </ul>
-    </div>
-    <div class="use-case-visual">
-      <div class="use-case-icon">
-        <img src="https://jmasulonis.github.io/cisco-infographic/links/image/location-analytics.svg" alt="Location Analytics">
-      </div>
-      <div class="stat-pills">
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/13-increase-user.svg" alt="13% increase">
-          <span class="stat-text">Increase in user acquisition</span>
-        </div>
-        <div class="stat-pill">
-          <img src="https://jmasulonis.github.io/cisco-infographic/links/image/10-increase-guest.svg" alt="10% increase">
-          <span class="stat-text">Increase in guest satisfaction (InterContinental Hotels Group)</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<div class="divider"></div>
-<section class="cta-section">
-  <div class="cta-glow"></div>
-  <p class="hero-eyebrow" style="opacity:1; animation:none;">Ready to Get Started?</p>
-  <h2 class="cta-title">See It In Action</h2>
-  <p class="cta-subtitle">Explore the full capabilities of Cisco Secure Network Access</p>
-  <div class="cta-buttons">
-    <a href="https://www.cisco.com/c/marketing/enterprise_networking_secure_network_access/Whitepaper-SecureNetworkAccess/cisco-secure-network-access.html?oid=wpren020432" class="btn btn-primary">Read Whitepaper</a>
-    <a href="https://www.cisco.com/c/en/us/solutions/enterprise-networks/secure-network-access.html" class="btn btn-outline">Watch Video</a>
-    <a href="#" class="btn btn-outline">Download PDF</a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footnotes">
-    <p class="footnote">1. Internal Cisco TCO analysis with large enterprise customers. <a href="https://www.cisco.com/c/en/us/about/case-studies-customer-success-stories/troms.html">Tromso Kommune case study.</a></p>
-    <p class="footnote">2. The Total Economic Impact™ of Cisco TrustSec — A Forrester Study. <a href="https://blogs.cisco.com/networking/wit-fosters-startups-and-nutures-students-with-an-open-yet-secure-network">Customer: Waterford Institute of Technology.</a></p>
-    <p class="footnote">3. Customer: Children's Hospital Los Angeles</p>
-    <p class="footnote">4. Customer: City of Luxembourg</p>
-    <p class="footnote">5. Customer: Norwegian Professional Football League</p>
-    <p class="footnote">6. Customer: InterContinental Hotels Group</p>
-  </div>
-  <p class="footer-legal">© 2020 Cisco and/or its affiliates. All rights reserved. Cisco and the Cisco logo are trademarks or registered trademarks of Cisco and/or its affiliates in the U.S. and other countries. To view a list of Cisco trademarks, go to <a href="https://www.cisco.com/go/trademarks" style="color:inherit">cisco.com/go/trademarks</a>. Third-party trademarks mentioned are the property of their respective owners. The use of the word partner does not imply a partnership relationship between Cisco and any other company. (1110R)</p>
-</footer>
-
-<script>
-  // Scroll-triggered reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6 Use Cases for Cisco Secure Network Access</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --cisco-blue: #00bceb;
+        --cisco-blue-dim: #0077a8;
+        --bg-deep: #060c14;
+        --bg-card: #0d1825;
+        --bg-card-hover: #112030;
+        --accent: #00e5ff;
+        --accent-warm: #ff6b2b;
+        --text-primary: #f0f6ff;
+        --text-muted: #7a9bb5;
+        --border: rgba(0, 188, 235, 0.18);
+        --stat-glow: 0 0 40px rgba(0, 188, 235, 0.4);
       }
-    });
-  }, { threshold: 0.12 });
 
-  document.querySelectorAll('.use-case, .cta-section').forEach(el => observer.observe(el));
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-  // Stagger stat pills within each use case
-  document.querySelectorAll('.use-case').forEach((section, sectionIdx) => {
-    section.querySelectorAll('.stat-pill').forEach((pill, i) => {
-      pill.style.transitionDelay = `${0.15 + i * 0.1}s`;
-    });
-  });
-</script>
-</body>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg-deep);
+        color: var(--text-primary);
+        font-family: "Barlow", sans-serif;
+        font-weight: 300;
+        line-height: 1.7;
+        overflow-x: hidden;
+      }
+
+      /* ── GRAIN OVERLAY ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1000;
+        opacity: 0.4;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        position: relative;
+        padding: 4rem 2rem;
+        overflow: hidden;
+      }
+
+      .hero-bg-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0, 188, 235, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 188, 235, 0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(
+          ellipse 80% 80% at 50% 50%,
+          black 30%,
+          transparent 100%
+        );
+      }
+
+      .hero-glow {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 188, 235, 0.12) 0%,
+          transparent 70%
+        );
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      .hero-logos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        opacity: 0;
+        animation: fadeUp 0.8s ease 0.2s forwards;
+      }
+
+      .hero-logos img {
+        height: 56px;
+      }
+
+      .hero-eyebrow {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--cisco-blue);
+        margin-bottom: 1.2rem;
+        opacity: 0;
+        animation: fadeUp 0.8s ease 0.4s forwards;
+      }
+
+      .hero-title {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(3.5rem, 9vw, 8rem);
+        font-weight: 900;
+        line-height: 0.92;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+        margin-bottom: 2rem;
+        opacity: 0;
+        animation: fadeUp 0.8s ease 0.5s forwards;
+      }
+
+      .hero-title .highlight {
+        color: var(--cisco-blue);
+        display: block;
+        -webkit-text-stroke: 2px var(--cisco-blue);
+        color: transparent;
+        text-shadow: none;
+      }
+
+      .hero-title .solid {
+        color: var(--text-primary);
+        display: block;
+      }
+
+      .hero-desc {
+        max-width: 640px;
+        margin: 0 auto 3rem;
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        line-height: 1.8;
+        opacity: 0;
+        animation: fadeUp 0.8s ease 0.65s forwards;
+      }
+
+      .hero-nav-images {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+        opacity: 0;
+        animation: fadeUp 0.8s ease 0.8s forwards;
+      }
+
+      .hero-nav-images img {
+        height: 80px;
+        opacity: 0.85;
+      }
+
+      .scroll-cue {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        opacity: 0;
+        animation: fadeUp 0.8s ease 1.2s forwards;
+      }
+
+      .scroll-cue-line {
+        width: 1px;
+        height: 48px;
+        background: linear-gradient(to bottom, var(--cisco-blue), transparent);
+        animation: pulse-line 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse-line {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: scaleY(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scaleY(1.1);
+        }
+      }
+
+      /* ── SECTION DIVIDER ── */
+      .divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--cisco-blue),
+          transparent
+        );
+        margin: 0 4rem;
+        opacity: 0.3;
+      }
+
+      /* ── USE CASE SECTIONS ── */
+      .use-case {
+        padding: 7rem 0;
+        position: relative;
+        opacity: 0;
+        transform: translateY(50px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+
+      .use-case.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .use-case:nth-child(odd) .use-case-inner {
+        flex-direction: row;
+      }
+      .use-case:nth-child(even) .use-case-inner {
+        flex-direction: row-reverse;
+      }
+
+      .use-case-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 3rem;
+        display: flex;
+        gap: 5rem;
+        align-items: center;
+      }
+
+      .use-case-content {
+        flex: 1;
+      }
+      .use-case-visual {
+        flex: 0 0 360px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+      }
+
+      /* Number watermark */
+      .use-case-number {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 12rem;
+        font-weight: 900;
+        line-height: 1;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(0, 188, 235, 0.08);
+        position: absolute;
+        right: 3rem;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .use-case:nth-child(even) .use-case-number {
+        right: auto;
+        left: 3rem;
+      }
+
+      .use-case-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--cisco-blue);
+        margin-bottom: 1rem;
+      }
+
+      .use-case-tag::before {
+        content: "";
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--cisco-blue);
+      }
+
+      .use-case-title {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-weight: 800;
+        text-transform: uppercase;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+      }
+
+      .use-case-body {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .use-case-bullets {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .use-case-bullets li {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+      }
+
+      .use-case-bullets li::before {
+        content: "▸";
+        color: var(--cisco-blue);
+        flex-shrink: 0;
+        margin-top: 0.05rem;
+        font-size: 0.8rem;
+      }
+
+      /* Main icon */
+      .use-case-icon img {
+        width: 200px;
+        height: 200px;
+        object-fit: contain;
+        filter: drop-shadow(0 0 30px rgba(0, 188, 235, 0.35));
+        transition: filter 0.3s;
+      }
+
+      .use-case-icon:hover img {
+        filter: drop-shadow(0 0 50px rgba(0, 188, 235, 0.7));
+      }
+
+      /* Stat pills */
+      .stat-pills {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .stat-pill {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        transition:
+          border-color 0.3s,
+          background 0.3s,
+          box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-pill::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--cisco-blue);
+        border-radius: 3px 0 0 3px;
+      }
+
+      .stat-pill:hover {
+        border-color: rgba(0, 188, 235, 0.45);
+        background: var(--bg-card-hover);
+        box-shadow: var(--stat-glow);
+      }
+
+      .stat-pill img {
+        height: 52px;
+        width: auto;
+        flex-shrink: 0;
+        filter: brightness(1.1) saturate(1.2);
+      }
+
+      .stat-text {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+
+      /* ── CTA SECTION ── */
+      .cta-section {
+        padding: 8rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+
+      .cta-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .cta-glow {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 60% 60% at 50% 50%,
+          rgba(0, 188, 235, 0.08) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .cta-title {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        margin-bottom: 1rem;
+      }
+
+      .cta-subtitle {
+        color: var(--text-muted);
+        margin-bottom: 3rem;
+        font-size: 1rem;
+      }
+
+      .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 0.9rem 2.5rem;
+        border-radius: 6px;
+        transition: all 0.25s ease;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background: var(--cisco-blue);
+        color: #000;
+      }
+
+      .btn-primary:hover {
+        background: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(0, 188, 235, 0.4);
+      }
+
+      .btn-outline {
+        border: 1px solid var(--border);
+        color: var(--cisco-blue);
+        background: transparent;
+      }
+
+      .btn-outline:hover {
+        border-color: var(--cisco-blue);
+        background: rgba(0, 188, 235, 0.08);
+        transform: translateY(-2px);
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footnotes {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 0.5rem 2rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .footnote {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+
+      .footnote a {
+        color: var(--cisco-blue);
+        text-decoration: none;
+      }
+      .footnote a:hover {
+        text-decoration: underline;
+      }
+
+      .footer-legal {
+        font-size: 0.72rem;
+        color: rgba(122, 155, 181, 0.5);
+        line-height: 1.7;
+        border-top: 1px solid rgba(0, 188, 235, 0.08);
+        padding-top: 2rem;
+        margin-top: 1rem;
+      }
+
+      /* ── ANIMATIONS ── */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 900px) {
+        .use-case-inner {
+          flex-direction: column !important;
+          padding: 0 1.5rem;
+          gap: 3rem;
+        }
+        .use-case-visual {
+          flex: none;
+          width: 100%;
+        }
+        .use-case-number {
+          display: none;
+        }
+        .stat-pills {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+        .stat-pill {
+          flex: 1;
+          min-width: 200px;
+        }
+        footer {
+          padding: 2rem 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg-grid"></div>
+      <div class="hero-glow"></div>
+
+      <div style="position: relative; z-index: 2">
+        <div class="hero-logos">
+          <a href="https://www.cisco.com">
+            <img
+              src="https://jmasulonis.github.io/cisco-infographic/links/image/cisco-btp-logo-stack.svg"
+              alt="Cisco"
+            />
+          </a>
+        </div>
+
+        <p class="hero-eyebrow">Cisco Secure Network Access</p>
+
+        <h1 class="hero-title">
+          <span class="solid">6 Use Cases</span>
+          <span class="highlight">That Transform</span>
+          <span class="solid">Your Network</span>
+        </h1>
+
+        <p class="hero-desc">
+          As connected devices multiply and data-intensive applications surge,
+          IT must deliver fast, reliable, and secure networks for branches and
+          campuses. Cisco Secure Network Access makes it possible.
+        </p>
+
+        <div class="hero-nav-images">
+          <img
+            src="https://jmasulonis.github.io/cisco-infographic/links/image/1-2-3.svg"
+            alt="Use cases 1-3"
+          />
+          <img
+            src="https://jmasulonis.github.io/cisco-infographic/links/image/4-5-6.svg"
+            alt="Use cases 4-6"
+          />
+        </div>
+      </div>
+
+      <div class="scroll-cue">
+        <span>Scroll</span>
+        <div class="scroll-cue-line"></div>
+      </div>
+    </section>
+
+    <!-- USE CASE 1 -->
+    <div class="divider"></div>
+    <section class="use-case">
+      <div class="use-case-number">01</div>
+      <div class="use-case-inner">
+        <div class="use-case-content">
+          <span class="use-case-tag">Use Case 01</span>
+          <h2 class="use-case-title">Campus Network Assurance</h2>
+          <p class="use-case-body">
+            IT needs to improve network availability and performance as
+            employees and customers demand a high-quality experience every time
+            they connect.
+          </p>
+          <ul class="use-case-bullets">
+            <li>
+              Identify and solve network issues faster with real-time analytical
+              capability
+            </li>
+            <li>
+              Provide visibility and assurance across campus infrastructure from
+              a single pane of glass
+            </li>
+            <li>
+              Monitor the network and identify unusual behavior using
+              enterprise-scale AI and ML
+            </li>
+          </ul>
+        </div>
+        <div class="use-case-visual">
+          <div class="use-case-icon">
+            <img
+              src="https://jmasulonis.github.io/cisco-infographic/links/image/campus-network-assurance.svg"
+              alt="Campus Network Assurance"
+            />
+          </div>
+          <div class="stat-pills">
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/90-reduction-time.svg"
+                alt="90% reduction"
+              />
+              <span class="stat-text"
+                >Reduction in time for issue detection and resolution</span
+              >
+            </div>
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/75-reduction-alerts.svg"
+                alt="75% reduction"
+              />
+              <span class="stat-text"
+                >Reduction in alerts with DNA Assurance AI/ML</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- USE CASE 2 -->
+    <div class="divider"></div>
+    <section class="use-case">
+      <div class="use-case-number">02</div>
+      <div class="use-case-inner">
+        <div class="use-case-content">
+          <span class="use-case-tag">Use Case 02</span>
+          <h2 class="use-case-title">Network Device Onboarding</h2>
+          <p class="use-case-body">
+            The network needs to move as fast as the business. Automating
+            deployment and software maintenance allows IT to design, configure,
+            and deploy new services faster than ever.
+          </p>
+          <ul class="use-case-bullets">
+            <li>
+              Robust automation for onboarding devices with consistent software
+              and security versions
+            </li>
+            <li>
+              Cisco DNA Center automation reduces risk of manual processes and
+              cuts time and expenses
+            </li>
+            <li>
+              Single automation solution for entire campus — day-0 deployments
+              and day-1+ changes
+            </li>
+            <li>
+              Design the network before the physical site is up for maximum
+              agility
+            </li>
+          </ul>
+        </div>
+        <div class="use-case-visual">
+          <div class="use-case-icon">
+            <img
+              src="https://jmasulonis.github.io/cisco-infographic/links/image/network-device-onboarding.svg"
+              alt="Network Device Onboarding"
+            />
+          </div>
+          <div class="stat-pills">
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/67-provisioning.svg"
+                alt="67% savings"
+              />
+              <span class="stat-text">Provisioning time savings</span>
+            </div>
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/3-4-hours.svg"
+                alt="3-4 hours"
+              />
+              <span class="stat-text"
+                >Saved every time a customer deploys a server</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- USE CASE 3 -->
+    <div class="divider"></div>
+    <section class="use-case">
+      <div class="use-case-number">03</div>
+      <div class="use-case-inner">
+        <div class="use-case-content">
+          <span class="use-case-tag">Use Case 03</span>
+          <h2 class="use-case-title">Campus Software Image Management</h2>
+          <p class="use-case-body">
+            Network performance and security compliance requires up-to-date,
+            consistent network images across the entire network — managed with
+            minimal IT staff effort.
+          </p>
+          <ul class="use-case-bullets">
+            <li>
+              Automate network upgrades, software image management, and
+              infrastructure refreshes
+            </li>
+            <li>
+              Maintain consistency of software and features through LAN and WLAN
+              infrastructure
+            </li>
+            <li>
+              Decrease security and configuration incidents and platform
+              vulnerabilities
+            </li>
+            <li>
+              Verify hardware compatibility and sufficient memory before
+              upgrades
+            </li>
+          </ul>
+        </div>
+        <div class="use-case-visual">
+          <div class="use-case-icon">
+            <img
+              src="https://jmasulonis.github.io/cisco-infographic/links/image/compus-software-management.svg"
+              alt="Campus Software Image Management"
+            />
+          </div>
+          <div class="stat-pills">
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/80-reduce-opex.svg"
+                alt="80% reduction"
+              />
+              <span class="stat-text">Reduce IT OpEx by up to 80%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- USE CASE 4 -->
+    <div class="divider"></div>
+    <section class="use-case">
+      <div class="use-case-number">04</div>
+      <div class="use-case-inner">
+        <div class="use-case-content">
+          <span class="use-case-tag">Use Case 04</span>
+          <h2 class="use-case-title">Campus Network Segmentation</h2>
+          <p class="use-case-body">
+            Design a network that automatically segments users and devices —
+            recognizing things and provisioning the appropriate policy without
+            manual intervention.
+          </p>
+          <ul class="use-case-bullets">
+            <li>
+              Single platform enabling macro and micro-segmentation for
+              scalability and flexibility
+            </li>
+            <li>
+              A single network fabric for a consistent user experience without
+              compromising security
+            </li>
+            <li>
+              Combines device profiling with segmentation policy for automatic
+              IoT security
+            </li>
+          </ul>
+        </div>
+        <div class="use-case-visual">
+          <div class="use-case-icon">
+            <img
+              src="https://jmasulonis.github.io/cisco-infographic/links/image/campus-network-seg.svg"
+              alt="Campus Network Segmentation"
+            />
+          </div>
+          <div class="stat-pills">
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/30-min-seg.svg"
+                alt="30 minutes"
+              />
+              <span class="stat-text"
+                >Network segmentation reduced from hours to 30 minutes</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- USE CASE 5 -->
+    <div class="divider"></div>
+    <section class="use-case">
+      <div class="use-case-number">05</div>
+      <div class="use-case-inner">
+        <div class="use-case-content">
+          <span class="use-case-tag">Use Case 05</span>
+          <h2 class="use-case-title">Scalable Access Policy</h2>
+          <p class="use-case-body">
+            Security policies should adapt to the user, device, and context. A
+            secure access network automatically recognizes and applies policies
+            across the entire organization.
+          </p>
+          <ul class="use-case-bullets">
+            <li>
+              Connect an increasing number of device types with confidence
+            </li>
+            <li>
+              Create and implement dynamic security by user, device, and
+              application
+            </li>
+            <li>
+              Policies automatically implemented in conjunction with
+              segmentation capabilities
+            </li>
+            <li>
+              Dramatically reduce security risk for both wired and wireless
+              access
+            </li>
+          </ul>
+        </div>
+        <div class="use-case-visual">
+          <div class="use-case-icon">
+            <img
+              src="https://jmasulonis.github.io/cisco-infographic/links/image/scalable-access-policy.svg"
+              alt="Scalable Access Policy"
+            />
+          </div>
+          <div class="stat-pills">
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/67-reduction-cost.svg"
+                alt="67% cost reduction"
+              />
+              <span class="stat-text"
+                >Reduction in cost at a hospital in LA</span
+              >
+            </div>
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/10-times-faster.svg"
+                alt="10x faster"
+              />
+              <span class="stat-text"
+                >Faster than before with Cisco SD-Access</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- USE CASE 6 -->
+    <div class="divider"></div>
+    <section class="use-case">
+      <div class="use-case-number">06</div>
+      <div class="use-case-inner">
+        <div class="use-case-content">
+          <span class="use-case-tag">Use Case 06</span>
+          <h2 class="use-case-title">Location Analytics</h2>
+          <p class="use-case-body">
+            Eliminate the physical blind spot and understand how people and
+            things interact in physical spaces. Leverage your existing Wi-Fi
+            infrastructure for actionable insights.
+          </p>
+          <ul class="use-case-bullets">
+            <li>
+              Centralized control and visibility into location services via a
+              single role-based dashboard
+            </li>
+            <li>
+              Enhance customer experiences with insights into visitors and
+              employees
+            </li>
+            <li>
+              Improve business efficiency and reduce costs through asset
+              management
+            </li>
+            <li>
+              Increase attachment rates and unlock new opportunities via
+              OpenRoaming
+            </li>
+          </ul>
+        </div>
+        <div class="use-case-visual">
+          <div class="use-case-icon">
+            <img
+              src="https://jmasulonis.github.io/cisco-infographic/links/image/location-analytics.svg"
+              alt="Location Analytics"
+            />
+          </div>
+          <div class="stat-pills">
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/13-increase-user.svg"
+                alt="13% increase"
+              />
+              <span class="stat-text">Increase in user acquisition</span>
+            </div>
+            <div class="stat-pill">
+              <img
+                src="https://jmasulonis.github.io/cisco-infographic/links/image/10-increase-guest.svg"
+                alt="10% increase"
+              />
+              <span class="stat-text"
+                >Increase in guest satisfaction (InterContinental Hotels
+                Group)</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="divider"></div>
+    <section class="cta-section">
+      <div class="cta-glow"></div>
+      <p class="hero-eyebrow" style="opacity: 1; animation: none">
+        Ready to Get Started?
+      </p>
+      <h2 class="cta-title">See It In Action</h2>
+      <p class="cta-subtitle">
+        Explore the full capabilities of Cisco Secure Network Access
+      </p>
+      <div class="cta-buttons">
+        <a
+          href="https://www.cisco.com/c/marketing/enterprise_networking_secure_network_access/Whitepaper-SecureNetworkAccess/cisco-secure-network-access.html?oid=wpren020432"
+          class="btn btn-primary"
+          >Read Whitepaper</a
+        >
+        <a
+          href="https://www.cisco.com/c/en/us/solutions/enterprise-networks/secure-network-access.html"
+          class="btn btn-outline"
+          >Watch Video</a
+        >
+        <a href="#" class="btn btn-outline">Download PDF</a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footnotes">
+        <p class="footnote">
+          1. Internal Cisco TCO analysis with large enterprise customers.
+          <a
+            href="https://www.cisco.com/c/en/us/about/case-studies-customer-success-stories/troms.html"
+            >Tromso Kommune case study.</a
+          >
+        </p>
+        <p class="footnote">
+          2. The Total Economic Impact™ of Cisco TrustSec — A Forrester Study.
+          <a
+            href="https://blogs.cisco.com/networking/wit-fosters-startups-and-nutures-students-with-an-open-yet-secure-network"
+            >Customer: Waterford Institute of Technology.</a
+          >
+        </p>
+        <p class="footnote">3. Customer: Children's Hospital Los Angeles</p>
+        <p class="footnote">4. Customer: City of Luxembourg</p>
+        <p class="footnote">
+          5. Customer: Norwegian Professional Football League
+        </p>
+        <p class="footnote">6. Customer: InterContinental Hotels Group</p>
+      </div>
+      <p class="footer-legal">
+        © 2020 Cisco and/or its affiliates. All rights reserved. Cisco and the
+        Cisco logo are trademarks or registered trademarks of Cisco and/or its
+        affiliates in the U.S. and other countries. To view a list of Cisco
+        trademarks, go to
+        <a href="https://www.cisco.com/go/trademarks" style="color: inherit"
+          >cisco.com/go/trademarks</a
+        >. Third-party trademarks mentioned are the property of their respective
+        owners. The use of the word partner does not imply a partnership
+        relationship between Cisco and any other company. (1110R)
+      </p>
+    </footer>
+
+    <script>
+      // Scroll-triggered reveal
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+
+      document
+        .querySelectorAll(".use-case, .cta-section")
+        .forEach((el) => observer.observe(el));
+
+      // Stagger stat pills within each use case
+      document.querySelectorAll(".use-case").forEach((section, sectionIdx) => {
+        section.querySelectorAll(".stat-pill").forEach((pill, i) => {
+          pill.style.transitionDelay = `${0.15 + i * 0.1}s`;
+        });
+      });
+    </script>
+  </body>
 </html>
